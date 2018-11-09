@@ -10,8 +10,9 @@ import ru.study.simpleshop.models.Role;
 import ru.study.simpleshop.models.User;
 import ru.study.simpleshop.repositories.UserRepository;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -23,6 +24,12 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
         return userRepository.findByUsername(username);
     }
 
@@ -39,7 +46,7 @@ public class UserService implements UserDetailsService {
 
         if (userFromDb != null) return false;
 
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRoles(Arrays.stream(Role.values()).collect(Collectors.toSet()));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 

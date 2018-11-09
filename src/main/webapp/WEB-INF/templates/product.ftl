@@ -8,32 +8,37 @@
             <div class="list-group">
                 <#list prodList as prod>
                     <a href="/products/${prod.productname}"
-                       class="list-group-item list-group-item-action <#if productname??><#if productname == prod.productname>active</#if></#if>">${prod.productname}</a>
+                       class="list-group-item list-group-item-action <#if currentProduct.productname??><#if currentProduct.productname == prod.productname>active</#if></#if>">${prod.productname}</a>
                 </#list>
             </div>
         </div>
         <div class="col-lg-8 ml-3">
             <div class="row">
-                Description Here: ${description!''}
+                Description Here: ${currentProduct.description!''}
             </div>
                 <#if known>
                     <div class="row">
                         <label>Leave a comment!</label>
                     </div>
-                    <form class="row form-group" action="/products" method="post">
-                        <textarea class="form-control" name="message" rows="7"></textarea>
-                        <input type="hidden" name="productname" value="${productname}">
+                    <form class="form-group row" action="/products" method="post">
+                        <textarea class="form-control ${(messageError??)?string('is-invalid', '')}" name="message"
+                                  rows="7"></textarea>
+                        <#if messageError??>
+                            <div class="invalid-feedback">
+                                <label>${messageError}</label>
+                            </div>
+                        </#if>
                         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                        <button type="submit">Submit</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 <#else>
                     <div class="row">
                         <label>You must log in to leave a comment!</label>
                     </div>
                 </#if>
-            <#if comments?has_content>
+            <#if currentProduct.comments?has_content>
                 <div class="card-columns">
-                <#list comments as comment>
+                <#list currentProduct.comments as comment>
                     <div class="card">
                         <div class="card-header bg-transparent border-success">${comment.author.username}</div>
                         <div class="card-body text-success">

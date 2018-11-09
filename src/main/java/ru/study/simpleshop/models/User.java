@@ -1,5 +1,6 @@
 package ru.study.simpleshop.models;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +22,7 @@ public class User implements UserDetails {
     private String username;
 
     @NotBlank(message = "Password is required")
+    @Length(max = 2048, message = "Password too long")
     private String password;
 
     @NotBlank(message = "You must confirm your pass")
@@ -36,11 +38,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-//    @ManyToMany
-//    @JoinTable(name = "user_product",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "product_id"))
-//    private List<Product> products;
+    @ManyToMany
+    @JoinTable(name = "user_product",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Comment> comments;
@@ -68,7 +70,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles;
     }
 
     public String getPassword() {
@@ -115,13 +117,13 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-//    public List<Product> getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(List<Product> products) {
-//        this.products = products;
-//    }
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public static boolean isActive() {
         return ACTIVE;

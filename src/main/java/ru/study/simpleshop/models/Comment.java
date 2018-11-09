@@ -3,6 +3,8 @@ package ru.study.simpleshop.models;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.sql.Date;
 
 @Entity
 @Table(name = "comments")
@@ -11,10 +13,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Enter some words")
     @Length(max = 2048, message = "Message too long (more than 2kB)")
     private String message;
 
-//    private Date date;
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -51,13 +54,13 @@ public class Comment {
         this.message = message;
     }
 
-//    public Date getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(Date date) {
-//        this.date = date;
-//    }
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public Product getProduct() {
         return product;

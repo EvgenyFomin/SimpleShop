@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories("ru.study.simpleshop.repositories")
@@ -65,10 +66,10 @@ public class PersistenceConfig {
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactoryBean.setPackagesToScan("ru.study.simpleshop.models");
-//        entityManagerFactoryBean.setJpaProperties(new Properties() {{
-//            put("hibernate.hbm2ddl.auto", "create");
+        entityManagerFactoryBean.setJpaProperties(new Properties() {{
+            put("hibernate.hbm2ddl.auto", "update");
 //            put("hibernate.show_sql", "true");
-//        }});
+        }});
 
         return entityManagerFactoryBean;
     }

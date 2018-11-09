@@ -1,5 +1,5 @@
 <#include "security.ftl">
-<#import "login.ftl" as l>
+<#import "forms.ftl" as l>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">SIMPLESHOP</a>
@@ -22,7 +22,7 @@
             </#if>
             <#if isAdmin>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Admin</a>
+                    <a class="nav-link" href="/add/product">Add Product</a>
                 </li>
             </#if>
             <li class="nav-item">

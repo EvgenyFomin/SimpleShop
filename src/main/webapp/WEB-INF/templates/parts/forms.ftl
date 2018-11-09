@@ -67,3 +67,42 @@
         <button class="btn btn-primary ml-2 my-sm-0" type="submit">Sign out</button>
     </form>
 </#macro>
+
+<#macro newProduct>
+    <div class="container p-3">
+        <form action="/add/product" method="post">
+            <div class="form-group">
+                <label>Product name</label>
+                <input type="text" class="form-control ${(productnameError??)?string('is-invalid', '')}"
+                       name="productname" placeholder="">
+                <#if productnameError??>
+                    <div class="invalid-feedback">
+                        <label>${productnameError}</label>
+                    </div>
+                </#if>
+            </div>
+            <div class="form-group">
+                <label>Count</label>
+                <input type="number" class="form-control ${(countError??)?string('is-invalid', '')}" name="count"
+                       placeholder="">
+                <#if countError??>
+                    <div class="invalid-feedback">
+                        <label>${countError}</label>
+                    </div>
+                </#if>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea class="form-control ${(descriptionError??)?string('is-invalid', '')}" name="description"
+                          placeholder="" rows="7"></textarea>
+                <#if descriptionError??>
+                    <div class="invalid-feedback">
+                        <label>${descriptionError}</label>
+                    </div>
+                </#if>
+            </div>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</#macro>
