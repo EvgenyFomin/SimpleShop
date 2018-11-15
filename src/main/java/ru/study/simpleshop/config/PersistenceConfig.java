@@ -68,7 +68,7 @@ public class PersistenceConfig {
         entityManagerFactoryBean.setPackagesToScan("ru.study.simpleshop.models");
         entityManagerFactoryBean.setJpaProperties(new Properties() {{
             put("hibernate.hbm2ddl.auto", "update");
-//            put("hibernate.show_sql", "true");
+            put("hibernate.show_sql", "true");
         }});
 
         return entityManagerFactoryBean;

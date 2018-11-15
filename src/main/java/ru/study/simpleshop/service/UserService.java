@@ -10,14 +10,16 @@ import ru.study.simpleshop.models.Role;
 import ru.study.simpleshop.models.User;
 import ru.study.simpleshop.repositories.UserRepository;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CartService cartService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -46,9 +48,12 @@ public class UserService implements UserDetailsService {
 
         if (userFromDb != null) return false;
 
-        user.setRoles(Arrays.stream(Role.values()).collect(Collectors.toSet()));
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
+
+        cartService.addCart(user);
 
         return true;
     }

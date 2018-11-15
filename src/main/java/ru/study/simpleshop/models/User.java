@@ -38,16 +38,17 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(name = "user_product",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
-
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Comment> comments;
 
     private static final boolean ACTIVE = true;
+
+    @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    private Cart cart;
 
     public User() {
     }
@@ -117,14 +118,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
     public static boolean isActive() {
         return ACTIVE;
     }
@@ -147,5 +140,21 @@ public class User implements UserDetails {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

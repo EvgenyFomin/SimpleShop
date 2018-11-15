@@ -82,8 +82,8 @@
                 </#if>
             </div>
             <div class="form-group">
-                <label>Count</label>
-                <input type="number" class="form-control ${(countError??)?string('is-invalid', '')}" name="count"
+                <label>Price</label>
+                <input type="number" class="form-control ${(countError??)?string('is-invalid', '')}" name="price"
                        placeholder="">
                 <#if countError??>
                     <div class="invalid-feedback">
@@ -105,4 +105,8 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+</#macro>
+
+<#macro editProducts>
+
 </#macro>

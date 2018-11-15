@@ -2,7 +2,7 @@
 <#import "forms.ftl" as l>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">SIMPLESHOP</a>
+    <a class="navbar-brand" href="/">SIMPLESHOP</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -30,6 +30,9 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
+            <#if username != "unknown">
+                <label><a class="nav-link" href="/basket">Basket</a></label>
+            </#if>
             <label class="mr-2">${username}</label>
             <#if username != "unknown">
                 <@l.logout />

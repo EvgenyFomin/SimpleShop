@@ -17,16 +17,13 @@ public class Product {
     @NotBlank(message = "You must add a description")
     private String description;
 
-    private Long count;
+    @OneToMany(mappedBy = "product")
+    private List<BuyProduct> buyProducts;
+
+    private Long price;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<Comment> comments;
-
-    @ManyToMany
-    @JoinTable(name = "user_product",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
 
     public Product() {
     }
@@ -55,14 +52,6 @@ public class Product {
         this.description = description;
     }
 
-    public Long getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = count;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -71,11 +60,19 @@ public class Product {
         this.comments = comments;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public Long getPrice() {
+        return price;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public List<BuyProduct> getBuyProducts() {
+        return buyProducts;
+    }
+
+    public void setBuyProducts(List<BuyProduct> buyProducts) {
+        this.buyProducts = buyProducts;
     }
 }

@@ -7,18 +7,18 @@ import ru.study.simpleshop.models.Product;
 import ru.study.simpleshop.models.User;
 import ru.study.simpleshop.repositories.CommentRepository;
 
-import java.util.List;
+import java.util.Date;
 
 @Service
 public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public List<Comment> findByAuthor(User user) {
-        return commentRepository.findByAuthor(user);
-    }
+    public void save(Comment comment, User user, Product product) {
+        comment.setAuthor(user);
+        comment.setProduct(product);
+        comment.setDate(new Date().toString());
 
-    public List<Comment> findByProduct(Product product) {
-        return commentRepository.findByProduct(product);
+        commentRepository.save(comment);
     }
 }

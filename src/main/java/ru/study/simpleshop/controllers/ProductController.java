@@ -3,6 +3,7 @@ package ru.study.simpleshop.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import ru.study.simpleshop.models.Comment;
 import ru.study.simpleshop.models.Product;
 import ru.study.simpleshop.models.User;
-import ru.study.simpleshop.repositories.CommentRepository;
 import ru.study.simpleshop.repositories.ProductRepository;
+import ru.study.simpleshop.service.CommentService;
+import ru.study.simpleshop.service.UserProductService;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -24,10 +26,13 @@ import java.util.Map;
 @RequestMapping("/products")
 public class ProductController {
     @Autowired
+    private UserProductService userProductService;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
-    private CommentRepository commentRepository;
+    private CommentService commentService;
 
     @ModelAttribute("currentProduct")
     public Product currentProduct() {
@@ -35,7 +40,8 @@ public class ProductController {
     }
 
     @GetMapping("{name}")
-    public String oneProduct(@PathVariable String name,
+    public String oneProduct(@AuthenticationPrincipal User user,
+                             @PathVariable String name,
                              @ModelAttribute("currentProduct") Product product,
                              Model model) {
         model.addAttribute("prodList", productRepository.findAll());
@@ -45,7 +51,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public String mainProduct(@PageableDefault Pageable pageable,
+    public String mainProduct(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
                               Model model) {
 
         Page<Product> page = productRepository.findAll(pageable);
@@ -70,13 +76,19 @@ public class ProductController {
             return "product";
         }
 
-        comment.setAuthor(user);
-        comment.setProduct(product);
-        commentRepository.save(comment);
+        commentService.save(comment, user, product);
 
         sessionStatus.setComplete();
 
-//        comment.setDate(new Date()); TODO
+        return "redirect:/products/" + product.getProductname();
+    }
+
+    @PostMapping("addToCart")
+    public String addProduct(@AuthenticationPrincipal User user,
+                             @ModelAttribute("currentProduct") Product product,
+                             SessionStatus sessionStatus) {
+
+        userProductService.addProduct(user, product);
         return "redirect:/products/" + product.getProductname();
     }
 }
