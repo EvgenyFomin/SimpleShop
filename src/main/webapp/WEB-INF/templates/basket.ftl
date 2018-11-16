@@ -4,13 +4,13 @@
 
 <@c.page>
     <div class="container p-3">
-        <#if page?has_content>
+        <#assign
+        key_list = productMap?keys
+        value_list = productMap?values
+        >
+        <#if key_list?has_content>
             <@p.pager url page />
             <div class="card-columns text-center p-3">
-                <#assign
-                key_list = productMap?keys
-                value_list = productMap?values
-                >
                 <#list page.content as prod>
                     <#if key_list?seq_contains(prod)>
                         <div class="card">
