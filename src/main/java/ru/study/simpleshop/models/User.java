@@ -25,13 +25,11 @@ public class User implements UserDetails {
     @Length(max = 2048, message = "Password too long")
     private String password;
 
-    @NotBlank(message = "You must confirm your pass")
-    @Transient
-    private String password2;
-
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email address")
     private String email;
+
+    private String activationCode;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -41,11 +39,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Comment> comments;
 
-    private static final boolean ACTIVE = true;
-
-    @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
+    private boolean active;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Cart cart;
@@ -99,15 +93,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return ACTIVE;
-    }
-
-    public String getPassword2() {
-        return password2;
-    }
-
-    public void setPassword2(String password2) {
-        this.password2 = password2;
+        return active;
     }
 
     public String getEmail() {
@@ -118,8 +104,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public static boolean isActive() {
-        return ACTIVE;
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Set<Role> getRoles() {
@@ -142,19 +132,19 @@ public class User implements UserDetails {
         this.comments = comments;
     }
 
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
-    }
-
     public Cart getCart() {
         return cart;
     }
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }

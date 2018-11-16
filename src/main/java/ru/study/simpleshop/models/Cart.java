@@ -13,10 +13,6 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<BuyProduct> buyProducts;
 
-    @ManyToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
-
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -27,14 +23,6 @@ public class Cart {
 
     public void setBuyProducts(List<BuyProduct> buyProducts) {
         this.buyProducts = buyProducts;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public void setShop(Shop shop) {
-        this.shop = shop;
     }
 
     public User getUser() {

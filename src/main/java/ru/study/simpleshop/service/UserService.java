@@ -12,6 +12,7 @@ import ru.study.simpleshop.repositories.UserRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -23,6 +24,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MailSender mailSender;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -43,7 +47,22 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public boolean save(User user) {
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+
+        if (user == null) {
+            return false;
+        }
+
+        user.setActive(true);
+        user.setActivationCode(null);
+
+        userRepository.save(user);
+
+        return true;
+    }
+
+    public boolean addNewUser(User user) {
         User userFromDb = findByUsername(user.getUsername());
 
         if (userFromDb != null) return false;
@@ -51,9 +70,19 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(Role.USER));
+        user.setActivationCode(UUID.randomUUID().toString());
+        user.setActive(false);
+
         userRepository.save(user);
 
         cartService.addCart(user);
+
+        String message = String.format(
+                "Hello, %s \n" +
+                        "Welcome to Simple Shop. Please visit a link: localhost:8080/activate/%s",
+                user.getUsername(), user.getActivationCode()
+        );
+        mailSender.send(user.getEmail(), "Activation code", message);
 
         return true;
     }
