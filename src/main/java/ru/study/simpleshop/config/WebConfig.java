@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -12,10 +13,10 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 @Configuration
-@EnableWebMvc
 @ComponentScan("ru.study.simpleshop")
-@EnableSpringDataWebSupport
 @PropertySource("classpath:application.properties")
+@EnableWebMvc
+@EnableSpringDataWebSupport
 public class WebConfig implements WebMvcConfigurer {
     @Bean
     public FreeMarkerViewResolver viewResolver() {
@@ -36,5 +37,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/login").setViewName("/login");
+    }
+
+    //    Creates advanced SQLExceptions
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 }

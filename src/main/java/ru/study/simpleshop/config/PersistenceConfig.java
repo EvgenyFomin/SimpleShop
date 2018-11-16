@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -20,8 +19,11 @@ import java.util.Properties;
 @EnableJpaRepositories("ru.study.simpleshop.repositories")
 @EnableTransactionManagement
 public class PersistenceConfig {
-    @Autowired
-    private DataSource dataSource;
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
 
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
@@ -29,11 +31,8 @@ public class PersistenceConfig {
     @Value("${spring.datasource.url}")
     private String url;
 
-    @Value("${spring.datasource.username}")
-    private String username;
-
-    @Value("${spring.datasource.password}")
-    private String password;
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public DriverManagerDataSource dataSource() {
@@ -76,10 +75,6 @@ public class PersistenceConfig {
 
         return jpaTransactionManager;
     }
-
-    //    Creates advanced SQLExceptions
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
 }
+
+
