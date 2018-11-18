@@ -19,4 +19,8 @@ public class BuyProductService {
 
         buyProductRepository.save(buyProduct);
     }
+
+    public void removeAllByCart(Cart cart) {
+        buyProductRepository.removeAllByCart(cart);
+    }
 }
