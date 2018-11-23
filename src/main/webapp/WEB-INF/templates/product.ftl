@@ -13,9 +13,53 @@
             </div>
         </div>
         <div class="col-lg-8 ml-3">
-            <div class="row">
-                Description Here: ${currentProduct.description!''}
-            </div>
+            <#if images?has_content>
+                <div class="row">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"
+                         style="width: 300px; height: 300px">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            <#assign i = 1>
+                                <#list images as image>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="${i}"></li>
+                                    <#assign i += 1>
+                                    <#if i == images?size>
+                                        <#break>
+                                    </#if>
+                                </#list>
+                        </ol>
+
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img class="d-block w-100" src="/img/Products/${images[0]}">
+                            </div>
+                            <#assign i = 0>
+                            <#list images as image>
+                                <#assign i += 1>
+                                <#if i == 1>
+                                    <#continue>
+                                </#if>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="/img/Products/${image}">
+                                </div>
+                            </#list>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
+                           data-slide="prev" style="background-color: lightgray">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
+                           data-slide="next" style="background-color: lightgray">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                    <div class="ml-3">
+                        Description Here: ${currentProduct.description!''}
+                    </div>
+                </div>
+
             <div class="row">
                 <div class="col-lg-11"></div>
                 <form class="col-lg-1" action="/products/addToCart" method="post">
@@ -23,6 +67,8 @@
                     <button type="submit" class="btn btn-success">Add</button>
                 </form>
             </div>
+            </#if>
+
                 <#if known>
                     <div class="row mt-3">
                         <label>Leave a comment!</label>

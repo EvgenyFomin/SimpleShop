@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -38,7 +37,7 @@ public class UserController {
     @Autowired
     private MailSender mailSender;
 
-    @Value("${myMail}")
+    @Value("${my.mail}")
     private String myMail;
 
     @ModelAttribute("productMap")
@@ -49,7 +48,7 @@ public class UserController {
     @GetMapping("/basket")
     public String basket(@AuthenticationPrincipal User user,
                          @ModelAttribute("productMap") Map<Product, Integer> productMap,
-                         @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
+                         @PageableDefault Pageable pageable,
                          Model model) {
 
         user = userService.findByUsername(user.getUsername());
@@ -92,6 +91,8 @@ public class UserController {
 
         return "index";
     }
+
+    //Ajax
 
     @PostMapping("/updateProductMap")
     public @ResponseBody

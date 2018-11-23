@@ -1,7 +1,8 @@
 <#macro plusMinusInput product count>
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-lg-offset-3">
+            <div class="col-lg-6 text-right"><h4>Quantity:</h4></div>
+            <div class="col-lg-6">
                 <div class="input-group">
                      <span class="input-group-btn">
                          <button id="minus${product.id}" class="btn btn-primary" type="button"
@@ -16,12 +17,4 @@
             </div>
         </div>
     </div>
-    <script>
-        <#--$('#minus${product.id}').click(function () {-->
-        <#--$("#calc${product.id}").val(parseInt($("#calc${product.id}").val()) - 1);-->
-        <#--});-->
-        <#--$('#plus${product.id}').click(function () {-->
-        <#--$("#calc${product.id}").val(parseInt($("#calc${product.id}").val()) + 1);-->
-        <#--});-->
-    </script>
 </#macro>

@@ -35,8 +35,9 @@
 
             <script>
                 function update(data) {
-                    var productId = "#calc" + data.charAt(0);
-                    $(productId).val(data.charAt(2));
+                    var spacePos = data.indexOf(" ");
+                    var productId = "#calc" + data.substring(0, spacePos);
+                    $(productId).val(data.substring(spacePos + 1, data.length));
                 }
 
                 function updateProductMap(productId, behav) {

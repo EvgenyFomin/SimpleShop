@@ -25,6 +25,9 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "product")
+    private List<Image> images;
+
     public Product() {
     }
 
@@ -74,5 +77,13 @@ public class Product {
 
     public void setBuyProducts(List<BuyProduct> buyProducts) {
         this.buyProducts = buyProducts;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

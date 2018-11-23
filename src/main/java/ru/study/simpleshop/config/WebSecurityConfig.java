@@ -20,6 +20,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Autowired
     private UserService userService;
 
+    @Bean
+    public UserService getUserService() {
+        return new UserService();
+    }
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -32,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll()
+                .antMatchers("/", "/registration", "/resources/**", "/activate/*", "/test", "/img/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

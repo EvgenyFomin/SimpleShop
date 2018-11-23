@@ -70,7 +70,7 @@
 
 <#macro newProduct>
     <div class="container p-3">
-        <form action="/add/product" method="post">
+        <form action="/add/product?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label>Product name</label>
                 <input type="text" class="form-control ${(productnameError??)?string('is-invalid', '')}"
@@ -101,10 +101,31 @@
                     </div>
                 </#if>
             </div>
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" name="files" onchange="updateFiles();"
+                           multiple>
+                    <label id="filesQuantity" class="custom-file-label" for="customFile">Choose files...</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </div>
         </form>
     </div>
+<script>
+    function updateFiles() {
+        var oFiles = document.getElementById("customFile").files,
+                nFiles = oFiles.length;
+
+        if (nFiles == 0)
+            document.getElementById("filesQuantity").innerHTML = "Choose files...";
+        else if (nFiles == 1)
+            document.getElementById("filesQuantity").innerHTML = oFiles.item(0).name;
+        else
+            document.getElementById("filesQuantity").innerHTML = nFiles.toString() + " files selected!";
+    }
+</script>
 </#macro>
 
 <#macro editProducts>
