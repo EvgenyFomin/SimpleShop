@@ -54,7 +54,7 @@ public class AdminController {
 
         productRepository.save(product);
 
-        if (multipartFiles.length != 0) {
+        if (multipartFiles.length != 0 && !multipartFiles[0].getOriginalFilename().equals("")) {
 
             uploadPath += File.separator + "Products" + File.separator + product.getProductname();
             File uploadDir = new File(uploadPath);

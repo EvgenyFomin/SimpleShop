@@ -19,13 +19,13 @@
                          style="width: 300px; height: 300px">
                         <ol class="carousel-indicators">
                             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <#assign i = 1>
+                            <#assign i = 0>
                                 <#list images as image>
-                                    <li data-target="#carouselExampleIndicators" data-slide-to="${i}"></li>
                                     <#assign i += 1>
-                                    <#if i == images?size>
-                                        <#break>
+                                    <#if i == 1>
+                                        <#continue>
                                     </#if>
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="${i}"></li>
                                 </#list>
                         </ol>
 
@@ -59,14 +59,26 @@
                         Description Here: ${currentProduct.description!''}
                     </div>
                 </div>
-
-            <div class="row">
-                <div class="col-lg-11"></div>
-                <form class="col-lg-1" action="/products/addToCart" method="post">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                    <button type="submit" class="btn btn-success">Add</button>
-                </form>
-            </div>
+                <div class="row">
+                    <div class="col-lg-11"></div>
+                    <form class="col-lg-1" action="/products/addToCart" method="post">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </form>
+                </div>
+            <#else>
+                <div class="row">
+                    <div class="ml-3">
+                        Description Here: ${currentProduct.description!''}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-11"></div>
+                    <form class="col-lg-1" action="/products/addToCart" method="post">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-success">Add</button>
+                    </form>
+                </div>
             </#if>
 
                 <#if known>

@@ -10,9 +10,11 @@ import ru.study.simpleshop.models.Role;
 import ru.study.simpleshop.models.User;
 import ru.study.simpleshop.repositories.UserRepository;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -67,9 +69,14 @@ public class UserService implements UserDetailsService {
 
         if (userFromDb != null) return false;
 
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(Role.USER));
+
+        if (findAll().size() == 0) {
+            user.setRoles(Arrays.stream(Role.values()).collect(Collectors.toSet()));
+        } else {
+            user.setRoles(Collections.singleton(Role.USER));
+        }
+
         user.setActivationCode(UUID.randomUUID().toString());
         user.setActive(false);
 
@@ -82,6 +89,7 @@ public class UserService implements UserDetailsService {
                         "Welcome to Simple Shop. Please visit a link: localhost:8080/activate/%s",
                 user.getUsername(), user.getActivationCode()
         );
+
         mailSender.send(user.getEmail(), "Activation code", message);
 
         return true;

@@ -10,7 +10,7 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active" style="width: 300px; height: 200px">
-                <img class="d-block w-100" src="/img/static/image/Products/Ccc/apple.jpg" alt="First slide"
+                <img class="d-block w-100" src="/img/Products/New/apples.jpg" alt="First slide"
                      style="width: 300px; height: 200px">
             </div>
             <div class="carousel-item">

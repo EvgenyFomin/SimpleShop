@@ -1,4 +1,4 @@
-<#import "parts/common.ftl" as c>
+<#import "parts/common2.ftl" as c>
 <#import "parts/plusMinusInput.ftl" as pmi>
 <#import "parts/pager.ftl" as p>
 
